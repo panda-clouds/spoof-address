@@ -1,14 +1,14 @@
 {
-  "name": "@panda-clouds/<panda-blank>",
+  "name": "@panda-clouds/spoof-address",
   "scripts": {
     "pretest": "eslint .",
     "test": "jest"
   },
-  "description": "<description>",
+  "description": "Display an approximate location without revealing its address",
   "version": "0.1.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/panda-clouds/panda-blank.git"
+    "url": "https://github.com/panda-clouds/spoof-address.git"
   },
   "author": {
     "name": "Marc Smith",
@@ -16,7 +16,7 @@
     "url": "https://github.com/mrmarcsmith"
   },
   "license": "MIT",
-  "main": "src/<PCName>.js",
+  "main": "src/PCSpoofAddress.js",
   "engines": {
     "node": ">= 8"
   },
