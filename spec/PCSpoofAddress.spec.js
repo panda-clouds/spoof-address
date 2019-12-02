@@ -1,28 +1,46 @@
-
-const <> = require('../src/PCSpoofAddress.js');
 const PCParseRunner = require('@panda-clouds/parse-runner');
+let Parse;
 
-describe('the PCSpoofAddress.js class', () => {
+describe('test', () => {
 	const parseRunner = new PCParseRunner();
 
-	parseRunner.helperClass('./PCSpoofAddress.js');
 	parseRunner.projectDir(__dirname + '/..');
+	parseRunner.injectCode(`
+Parse.Cloud.define('challenge', request => {
+  return 'everest';
+});
+
+const PCSpoofAddress = require('./PCSpoofAddress.js');
+Parse.Cloud.define('searchAddressForString', request => {
+	const spoofer = new PCSpoofAddress()
+  return PCSpoofAddress.test()
+});
+Parse.Cloud.define('spoofCoordinates', request => {
+  return PCSpoofAddress.spoof(request.params)
+});
+	`);
 
 	beforeAll(async () => {
-		await parseRunner.startParseServer();
+		Parse = await parseRunner.startParseServer();
 	}, 1000 * 60 * 2);
 
 	afterAll(async () => {
 		await parseRunner.cleanUp();
 	});
 
-	it('should <>', async () => {
+	it('should connect to parse server', async () => {
 		expect.assertions(1);
 
-		const json_obj = { param1: 'value', param2: 123 };
+		const result = await Parse.Cloud.run('challenge');
 
-		const result = await parseRunner.callHelper('areParamsDefined', [json_obj, ['param1', 'param2']]);
+		expect(result).toBe('everest');
+	});
 
-		expect(result).toBe(true);
+	it('should pass stringValue', async () => {
+		expect.assertions(1);
+
+		const results = await Parse.Cloud.run('spoofCoordinates', { "lat":-111.3452345,"long":86.234523 });
+
+		expect(results).toBe...
 	});
 });
